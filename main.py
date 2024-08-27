@@ -17,16 +17,16 @@ health_table = requests.get("https://foxhole.wiki.gg/wiki/Vehicle_Health", heade
 health_table = BeautifulSoup(health_table.text, "html.parser").body
 
 links = {
-    # 'T12 “Actaeon” Tankette': 'https://foxhole.wiki.gg/wiki/T12_“Actaeon”_Tankette',
-    # 'H-5 “Hatchet”': 'https://foxhole.wiki.gg/wiki/H-5_“Hatchet”',
-    # 'H-8 “Kranesca”': 'https://foxhole.wiki.gg/wiki/H-8_“Kranesca”',
-     #'H-10 “Pelekys”': 'https://foxhole.wiki.gg/wiki/H-10_“Pelekys”',
-    #'HC-2 “Scorpion”': 'https://foxhole.wiki.gg/wiki/Light_Infantry_Tank',
-    # 'HC-7 “Ballista”': 'https://foxhole.wiki.gg/wiki/Siege_Tank',
-    # '85K-b “Falchion”': 'https://foxhole.wiki.gg/wiki/85K-b_“Falchion”',
-    # '85K-a_“Spatha”': 'https://foxhole.wiki.gg/wiki/85K-a_“Spatha”',
-    # 'Cullen Predator Mk. III': 'https://foxhole.wiki.gg/wiki/Cullen_Predator_Mk._III',
-    # 'Gallagher_Outlaw_Mk._II': 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II',
+    'T12 “Actaeon” Tankette': 'https://foxhole.wiki.gg/wiki/T12_“Actaeon”_Tankette',
+    'H-5 “Hatchet”': 'https://foxhole.wiki.gg/wiki/H-5_“Hatchet”',
+    'H-8 “Kranesca”': 'https://foxhole.wiki.gg/wiki/H-8_“Kranesca”',
+     'H-10 “Pelekys”': 'https://foxhole.wiki.gg/wiki/H-10_“Pelekys”',
+    'HC-2 “Scorpion”': 'https://foxhole.wiki.gg/wiki/Light_Infantry_Tank',
+     'HC-7 “Ballista”': 'https://foxhole.wiki.gg/wiki/Siege_Tank',
+    '85K-b “Falchion”': 'https://foxhole.wiki.gg/wiki/85K-b_“Falchion”',
+    '85K-a_“Spatha”': 'https://foxhole.wiki.gg/wiki/85K-a_“Spatha”',
+    'Cullen Predator Mk. III': 'https://foxhole.wiki.gg/wiki/Cullen_Predator_Mk._III',
+    'Gallagher_Outlaw_Mk._II': 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II',
     'Silverhand - Mk. IV':'https://foxhole.wiki.gg/wiki/Silverhand_-_Mk._IV',
 }
 translation = {
@@ -141,6 +141,7 @@ def get_vehicle_stats(url):
 
     # перезарядка и длительность стрельбы
     reload_dict = {}
+    range_dict = {}
     for i in tab_inventory.find('ul').findChildren("li", recursive=False):
         gun_name = i.contents[0].rstrip()
         gun_name = translation[gun_name] if gun_name in translation else gun_name
@@ -161,22 +162,21 @@ def get_vehicle_stats(url):
 
         reload_dict.update({gun_name: var_dict})
 
-    # pprint(reload_dict, sort_dicts=False)
-    # quit()
+        pattern = r'Range: ((\d+)([.]\d+)?(-\d+)?) meters'
+        matches = re.findall(pattern, text)
 
-    # pattern = r'.+?(\d+[.]?(\d+)?).+'
-    # matches = re.findall(pattern, tab_inventory.ul.ul.contents[6].get_text())
-    # reload_duration = matches[0][0]
-    #
-    #
-    # pattern = r'.+?(\d+[.]?(\d+)?).+'
-    # matches = re.findall(pattern, tab_inventory.ul.ul.contents[8].get_text())
-    # firing_duration = matches[0][0]
+        var_dict = {
+            'Дальность': matches[0][0],
+        }
+
+        range_dict.update({gun_name: var_dict})
 
     # дальность
-    pattern = r'.+?(\d+[.]?(\d+)?).+'
-    matches = re.findall(pattern, tab_inventory.ul.ul.contents[4].get_text())
-    range = matches[0][0]
+
+
+    # pattern = r'.+?(\d+[.]?(\d+)?).+'
+    # matches = re.findall(pattern, tab_inventory.ul.ul.contents[4].get_text())
+    # range = matches[0][0]
 
     # Экипаж
     crew_arr = []
@@ -256,7 +256,7 @@ def get_vehicle_stats(url):
         'Вооружение': translated_guns,
         'Перезарядка': reload_dict,
         'Экипаж': translated_crew,
-        'Дальность': range
+        'Дальность': range_dict
     }}
 
 
@@ -266,6 +266,6 @@ for i in links.values():
     result['vehicles'].update(get_vehicle_stats(i))
 
 # pprint(result, sort_dicts=False)
-f = open('example.txt', 'w+')
+f = open('output.txt', 'w+', encoding='windows-1251')
 f.write(pformat(result, sort_dicts=False))
 f.close()
