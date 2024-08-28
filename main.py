@@ -1,12 +1,13 @@
-import json
+# import json
 import requests
 from bs4 import BeautifulSoup
 import re
-from pprint import pprint
+# from pprint import pprint
 from pprint import pformat
 
 st_accept = "text/html"
-st_useragent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_3_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15"
+st_useragent = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 12_3_1) AppleWebKit/605.1.15 (KHTML, like Gecko) "
+                "Version/15.4 Safari/605.1.15")
 
 headers = {
     "Accept": st_accept,
@@ -20,14 +21,19 @@ links = {
     'T12 “Actaeon” Tankette': 'https://foxhole.wiki.gg/wiki/T12_“Actaeon”_Tankette',
     'H-5 “Hatchet”': 'https://foxhole.wiki.gg/wiki/H-5_“Hatchet”',
     'H-8 “Kranesca”': 'https://foxhole.wiki.gg/wiki/H-8_“Kranesca”',
-     'H-10 “Pelekys”': 'https://foxhole.wiki.gg/wiki/H-10_“Pelekys”',
+    'H-10 “Pelekys”': 'https://foxhole.wiki.gg/wiki/H-10_“Pelekys”',
     'HC-2 “Scorpion”': 'https://foxhole.wiki.gg/wiki/Light_Infantry_Tank',
-     'HC-7 “Ballista”': 'https://foxhole.wiki.gg/wiki/Siege_Tank',
+    'HC-7 “Ballista”': 'https://foxhole.wiki.gg/wiki/Siege_Tank',
     '85K-b “Falchion”': 'https://foxhole.wiki.gg/wiki/85K-b_“Falchion”',
     '85K-a_“Spatha”': 'https://foxhole.wiki.gg/wiki/85K-a_“Spatha”',
+    '86K-a “Bardiche”': 'https://foxhole.wiki.gg/wiki/86K-a_“Bardiche”',
+    '85V-g “Talos”': 'https://foxhole.wiki.gg/wiki/85V-g_“Talos”',
+    'Lance-36': 'https://foxhole.wiki.gg/wiki/Lance-36',
+    'Lance-25 “Hasta”': 'https://foxhole.wiki.gg/wiki/Lance-25_“Hasta”',
+    'O-75b “Ares”': 'https://foxhole.wiki.gg/wiki/O-75b_“Ares”',
     'Cullen Predator Mk. III': 'https://foxhole.wiki.gg/wiki/Cullen_Predator_Mk._III',
     'Gallagher_Outlaw_Mk._II': 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II',
-    'Silverhand - Mk. IV':'https://foxhole.wiki.gg/wiki/Silverhand_-_Mk._IV',
+    'Silverhand - Mk. IV': 'https://foxhole.wiki.gg/wiki/Silverhand_-_Mk._IV',
 }
 translation = {
     '40mm Long Barrel Cannon': '40-мм длинноствольная пушка',
@@ -64,6 +70,8 @@ translation = {
     'Gunner (Right)': 'Наводчик (Правый)',
     'Commander/Gunner (Left)': 'Командик/наводчик (левый)',
     'Commander/Machine Gunner': 'Командир/Наводчик пулемета',
+    '12.7mm Coaxial Machine Gun': 'Спаренный 12,7-мм пулемет',
+    '68mm Short-Barrel Cannon': '68-мм короткоствольная пушка',
 }
 
 
@@ -73,6 +81,7 @@ def get_vehicle_stats(url):
     soup = BeautifulSoup(src, "html.parser").body
 
     # Название
+
     name = soup.find("h2", {"data-source": "name"}).get_text()
 
     # Здоровье
@@ -118,7 +127,7 @@ def get_vehicle_stats(url):
     tab_engine = tab_panels[2]
 
     # Скорость
-    pattern = r'Speed: (\d[.]?(\d{2})?) m\/s on road, (\d[.]?(\d{2})?) m\/s off-road'
+    pattern = r'Speed: (\d+[.]?(\d+)?) m\/s on road, (\d+[.]?(\d+)?) m\/s off-road'
     matches = re.findall(pattern, tab_engine.ul.get_text())
 
     speed1 = matches[0][0]
@@ -134,12 +143,12 @@ def get_vehicle_stats(url):
     fuel_autonomy = matches[0][1]
 
     # используемое вооружение
-    guns = soup.find_all("div", {"data-source": "armament"})[0].contents[3].get_text().replace(', ', '-').split('-')
+    guns = soup.find_all("div", {"data-source": "armament"})[0].contents[3].get_text().replace(', ', '#').split('#')
     translated_guns = []
     for i in guns:
         translated_guns.append(translation[i]) if i in translation else translated_guns.append(i)
 
-    # перезарядка и длительность стрельбы
+    # перезарядка и длительность стрельбы и дальность
     reload_dict = {}
     range_dict = {}
     for i in tab_inventory.find('ul').findChildren("li", recursive=False):
@@ -171,13 +180,6 @@ def get_vehicle_stats(url):
 
         range_dict.update({gun_name: var_dict})
 
-    # дальность
-
-
-    # pattern = r'.+?(\d+[.]?(\d+)?).+'
-    # matches = re.findall(pattern, tab_inventory.ul.ul.contents[4].get_text())
-    # range = matches[0][0]
-
     # Экипаж
     crew_arr = []
     for i in tab_crew.ul.find_all('b'):
@@ -193,17 +195,17 @@ def get_vehicle_stats(url):
         inventory_arr.append(i.get_text())
 
     # инвентарь пустой
-    pattern = r'(\d) inventory slot'
-    matches = re.findall(pattern, tab_inventory.contents[-4])
-    free_inventory = matches[0] if matches else None
+    # pattern = r'(\d) inventory slot'
+    # matches = re.findall(pattern, tab_inventory.contents[-4])
+    # free_inventory = matches[0] if matches else None
 
     # Инвентарь итоговый
 
     # Место постройки
-    build_location = soup.find_all("div", {"data-source": "build_location"})[0].contents[3].getText()
+    # build_location = soup.find_all("div", {"data-source": "build_location"})[0].contents[3].getText()
 
     # Стоимость постройки
-    build_cost = soup.find_all("div", {"data-source": "build_location"})[1].contents[3].getText()
+    # build_cost = soup.find_all("div", {"data-source": "build_location"})[1].contents[3].getText()
 
     # таблица здоровья и принимаемого урона
     table = health_table.find("table", {"class": "wikitable"}).tbody
