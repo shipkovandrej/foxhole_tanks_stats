@@ -34,6 +34,16 @@ links = {
     'Cullen Predator Mk. III': 'https://foxhole.wiki.gg/wiki/Cullen_Predator_Mk._III',
     'Gallagher_Outlaw_Mk._II': 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II',
     'Silverhand - Mk. IV': 'https://foxhole.wiki.gg/wiki/Silverhand_-_Mk._IV',
+    'King Spire Mk. I': 'https://foxhole.wiki.gg/wiki/King_Spire_Mk._I',
+    'King Gallant Mk. II': 'https://foxhole.wiki.gg/wiki/King_Gallant_Mk._II',
+    'Devitt Mk. III': 'https://foxhole.wiki.gg/wiki/Devitt_Mk._III',
+    'Devitt Ironhide Mk. IV': 'https://foxhole.wiki.gg/wiki/Devitt_Ironhide_Mk._IV',
+    'Gallagher Highwayman Mk. III': 'https://foxhole.wiki.gg/wiki/Gallagher_Highwayman_Mk._III',
+    'Silverhand Chieftain - Mk. VI': 'https://foxhole.wiki.gg/wiki/Silverhand_Chieftain_-_Mk._VI',
+    'Silverhand Lordscar - Mk. X': 'https://foxhole.wiki.gg/wiki/Silverhand_Lordscar_-_Mk._X',
+    'Noble Widow MK. XIV': 'https://foxhole.wiki.gg/wiki/Noble_Widow_MK._XIV',
+    'Flood Mk. I': 'https://foxhole.wiki.gg/wiki/Flood_Mk._I',
+    'Flood Juggernaut Mk. VII': 'https://foxhole.wiki.gg/wiki/Flood_Juggernaut_Mk._VII',
 }
 translation = {
     '40mm Long Barrel Cannon': '40-мм длинноствольная пушка',
