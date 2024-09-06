@@ -2,7 +2,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-# from pprint import pprint
+from pprint import pprint
 from pprint import pformat
 
 st_accept = "text/html"
@@ -19,31 +19,31 @@ health_table = BeautifulSoup(health_table.text, "html.parser").body
 
 links = {
     'T12 “Actaeon” Tankette': 'https://foxhole.wiki.gg/wiki/T12_“Actaeon”_Tankette',
-    'H-5 “Hatchet”': 'https://foxhole.wiki.gg/wiki/H-5_“Hatchet”',
-    'H-8 “Kranesca”': 'https://foxhole.wiki.gg/wiki/H-8_“Kranesca”',
-    'H-10 “Pelekys”': 'https://foxhole.wiki.gg/wiki/H-10_“Pelekys”',
-    'HC-2 “Scorpion”': 'https://foxhole.wiki.gg/wiki/Light_Infantry_Tank',
-    'HC-7 “Ballista”': 'https://foxhole.wiki.gg/wiki/Siege_Tank',
-    '85K-b “Falchion”': 'https://foxhole.wiki.gg/wiki/85K-b_“Falchion”',
-    '85K-a_“Spatha”': 'https://foxhole.wiki.gg/wiki/85K-a_“Spatha”',
-    '86K-a “Bardiche”': 'https://foxhole.wiki.gg/wiki/86K-a_“Bardiche”',
-    '85V-g “Talos”': 'https://foxhole.wiki.gg/wiki/85V-g_“Talos”',
-    'Lance-36': 'https://foxhole.wiki.gg/wiki/Lance-36',
-    'Lance-25 “Hasta”': 'https://foxhole.wiki.gg/wiki/Lance-25_“Hasta”',
-    'O-75b “Ares”': 'https://foxhole.wiki.gg/wiki/O-75b_“Ares”',
-    'Cullen Predator Mk. III': 'https://foxhole.wiki.gg/wiki/Cullen_Predator_Mk._III',
-    'Gallagher_Outlaw_Mk._II': 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II',
-    'Silverhand - Mk. IV': 'https://foxhole.wiki.gg/wiki/Silverhand_-_Mk._IV',
-    'King Spire Mk. I': 'https://foxhole.wiki.gg/wiki/King_Spire_Mk._I',
-    'King Gallant Mk. II': 'https://foxhole.wiki.gg/wiki/King_Gallant_Mk._II',
-    'Devitt Mk. III': 'https://foxhole.wiki.gg/wiki/Devitt_Mk._III',
-    'Devitt Ironhide Mk. IV': 'https://foxhole.wiki.gg/wiki/Devitt_Ironhide_Mk._IV',
-    'Gallagher Highwayman Mk. III': 'https://foxhole.wiki.gg/wiki/Gallagher_Highwayman_Mk._III',
-    'Silverhand Chieftain - Mk. VI': 'https://foxhole.wiki.gg/wiki/Silverhand_Chieftain_-_Mk._VI',
-    'Silverhand Lordscar - Mk. X': 'https://foxhole.wiki.gg/wiki/Silverhand_Lordscar_-_Mk._X',
-    'Noble Widow MK. XIV': 'https://foxhole.wiki.gg/wiki/Noble_Widow_MK._XIV',
-    'Flood Mk. I': 'https://foxhole.wiki.gg/wiki/Flood_Mk._I',
-    'Flood Juggernaut Mk. VII': 'https://foxhole.wiki.gg/wiki/Flood_Juggernaut_Mk._VII',
+    # 'H-5 “Hatchet”': 'https://foxhole.wiki.gg/wiki/H-5_“Hatchet”',
+    # 'H-8 “Kranesca”': 'https://foxhole.wiki.gg/wiki/H-8_“Kranesca”',
+    # 'H-10 “Pelekys”': 'https://foxhole.wiki.gg/wiki/H-10_“Pelekys”',
+    # 'HC-2 “Scorpion”': 'https://foxhole.wiki.gg/wiki/Light_Infantry_Tank',
+    # 'HC-7 “Ballista”': 'https://foxhole.wiki.gg/wiki/Siege_Tank',
+    # '85K-b “Falchion”': 'https://foxhole.wiki.gg/wiki/85K-b_“Falchion”',
+    # '85K-a_“Spatha”': 'https://foxhole.wiki.gg/wiki/85K-a_“Spatha”',
+    # '86K-a “Bardiche”': 'https://foxhole.wiki.gg/wiki/86K-a_“Bardiche”',
+    # '85V-g “Talos”': 'https://foxhole.wiki.gg/wiki/85V-g_“Talos”',
+    # 'Lance-36': 'https://foxhole.wiki.gg/wiki/Lance-36',
+    # 'Lance-25 “Hasta”': 'https://foxhole.wiki.gg/wiki/Lance-25_“Hasta”',
+    # 'O-75b “Ares”': 'https://foxhole.wiki.gg/wiki/O-75b_“Ares”',
+    # 'Gallagher_Outlaw_Mk._II': 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II',
+    # 'Silverhand - Mk. IV': 'https://foxhole.wiki.gg/wiki/Silverhand_-_Mk._IV',
+    # 'King Spire Mk. I': 'https://foxhole.wiki.gg/wiki/King_Spire_Mk._I',
+    # 'King Gallant Mk. II': 'https://foxhole.wiki.gg/wiki/King_Gallant_Mk._II',
+    # 'Devitt Mk. III': 'https://foxhole.wiki.gg/wiki/Devitt_Mk._III',
+    # 'Devitt Ironhide Mk. IV': 'https://foxhole.wiki.gg/wiki/Devitt_Ironhide_Mk._IV',
+    # 'Gallagher Highwayman Mk. III': 'https://foxhole.wiki.gg/wiki/Gallagher_Highwayman_Mk._III',
+    # 'Silverhand Chieftain - Mk. VI': 'https://foxhole.wiki.gg/wiki/Silverhand_Chieftain_-_Mk._VI',
+    # 'Silverhand Lordscar - Mk. X': 'https://foxhole.wiki.gg/wiki/Silverhand_Lordscar_-_Mk._X',
+    # 'Noble Widow MK. XIV': 'https://foxhole.wiki.gg/wiki/Noble_Widow_MK._XIV',
+    # 'Flood Mk. I': 'https://foxhole.wiki.gg/wiki/Flood_Mk._I',
+    # 'Flood Juggernaut Mk. VII': 'https://foxhole.wiki.gg/wiki/Flood_Juggernaut_Mk._VII',
+    # 'Cullen Predator Mk. III': 'https://foxhole.wiki.gg/wiki/Cullen_Predator_Mk._III',
 }
 translation = {
     '40mm Long Barrel Cannon': '40-мм длинноствольная пушка',
@@ -61,6 +61,7 @@ translation = {
     '2x Quad Grenade Launcher': '2 четырехствольных гранатомета',
     'Heavy Flamethrower': 'Тяжелый огнемет',
     '75mm Cannon': '75-мм пушка',
+    '30mm Cannon': '30-мм пушка',
     'Double-Barrelled 75mm Cannon': 'Двуствольная 75-мм пушка',
     'Commander': 'Командир',
     'Driver': 'Мехвод',
@@ -75,13 +76,15 @@ translation = {
     'Right Engineer': 'Правый инженер',
     'Left Engineer': 'Левый инженер',
     'Gunner': 'Наводчик',
-    'Passenger/Commander': 'Пассажир/командир',
+    'Passenger/Commander': 'Пассажир/Командир',
     'Secondary Gunner': 'Второй наводчик',
     'Gunner (Right)': 'Наводчик (Правый)',
     'Commander/Gunner (Left)': 'Командик/наводчик (левый)',
     'Commander/Machine Gunner': 'Командир/Наводчик пулемета',
     '12.7mm Coaxial Machine Gun': 'Спаренный 12,7-мм пулемет',
     '68mm Short-Barrel Cannon': '68-мм короткоствольная пушка',
+    'Gunner/Commander': 'Наводчик/Командир',
+    'Secondary Gunner/Commander': 'Второй наводчик/Командир',
 }
 
 
@@ -278,6 +281,8 @@ for i in links.values():
     result['vehicles'].update(get_vehicle_stats(i))
 
 # pprint(result, sort_dicts=False)
-f = open('output.txt', 'w+', encoding='windows-1251')
-f.write(pformat(result, sort_dicts=False))
-f.close()
+# f = open('output.txt', 'w+', encoding='windows-1251')
+# f.write(pformat(result, sort_dicts=False))
+# f.close()
+
+# pprint(result['vehicles']['T12 “Actaeon” Tankette']['П.П/У'], sort_dicts=False)
