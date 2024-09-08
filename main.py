@@ -252,7 +252,7 @@ def get_vehicle_stats(url):
         val2 = row.contents[assign_dict[i]].contents[2].string.rstrip()
         table_dict[i] = f'{val1}/{val2}'
 
-    return {name: {
+    return {
         'ХП': hp,
         'Подбит при': disable,
         'П.П/У': table_dict,
@@ -272,7 +272,7 @@ def get_vehicle_stats(url):
         'Перезарядка': reload_dict,
         'Экипаж': translated_crew,
         'Дальность': range_dict
-    }}
+    }
 
 
 result = {'vehicles': {}}
