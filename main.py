@@ -31,7 +31,7 @@ links = {
     # 'Lance-36': 'https://foxhole.wiki.gg/wiki/Lance-36',
     # 'Lance-25 “Hasta”': 'https://foxhole.wiki.gg/wiki/Lance-25_“Hasta”',
     # 'O-75b “Ares”': 'https://foxhole.wiki.gg/wiki/O-75b_“Ares”',
-    # 'Gallagher_Outlaw_Mk._II': 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II',
+    # 'Gallagher Outlaw Mk. II': 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II',
     # 'Silverhand - Mk. IV': 'https://foxhole.wiki.gg/wiki/Silverhand_-_Mk._IV',
     # 'King Spire Mk. I': 'https://foxhole.wiki.gg/wiki/King_Spire_Mk._I',
     # 'King Gallant Mk. II': 'https://foxhole.wiki.gg/wiki/King_Gallant_Mk._II',

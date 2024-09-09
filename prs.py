@@ -31,7 +31,7 @@ links = {
     'Lance-36': 'https://foxhole.wiki.gg/wiki/Lance-36',
     'Lance-25 “Hasta”': 'https://foxhole.wiki.gg/wiki/Lance-25_“Hasta”',
     'O-75b “Ares”': 'https://foxhole.wiki.gg/wiki/O-75b_“Ares”',
-    'Gallagher_Outlaw_Mk._II': 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II',
+    'Gallagher Outlaw Mk. II': 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II',
     'Silverhand - Mk. IV': 'https://foxhole.wiki.gg/wiki/Silverhand_-_Mk._IV',
     'King Spire Mk. I': 'https://foxhole.wiki.gg/wiki/King_Spire_Mk._I',
     'King Gallant Mk. II': 'https://foxhole.wiki.gg/wiki/King_Gallant_Mk._II',
@@ -49,10 +49,10 @@ links = {
 # result = {'vehicles': {}}
 
 prs = Presentation('test.pptx')
-slide = prs.slides[2]
-block = slide.shapes[1].text_frame.text
-print(block)
-quit()
+# slide = prs.slides[3]
+# block = slide.shapes[1].text_frame.text
+# print(block)
+# quit()
 
 for slide in prs.slides:
     text = slide.shapes.title.text
@@ -61,7 +61,7 @@ for slide in prs.slides:
         result = get_vehicle_stats(links[tank_name])
 
 
-        block = slide.shapes[3].text_frame
+        block = slide.shapes[1].text_frame
 
         block.text = f"ХП - {result['ХП']} ед"
 
@@ -95,7 +95,7 @@ for slide in prs.slides:
             i.runs[0].font.name = "Bahnschrift Condensed"
         prs.save('test.pptx')
 
-        block = slide.shapes[4].text_frame
+        block = slide.shapes[2].text_frame
 
         block.text = f"Стоимость полной починки - {result['Стоимость полной починки']} бматов"
 

@@ -836,3 +836,17 @@
                                                      'Инженер'],
                                           'Дальность': {'2 четырехствольных гранатомета': {'Дальность': '30'},
                                                         '94,5-мм пушка': {'Дальность': '40'}}}}}
+
+    Gallagher_Outlaw_Mk._II
+    Silverhand - Mk. IV
+    King Spire Mk. I
+    King Gallant Mk. II
+    Devitt Mk. III
+    Devitt Ironhide Mk. IV
+    Gallagher Highwayman Mk. III
+    Silverhand Chieftain - Mk. VI
+    Silverhand Lordscar - Mk. X
+    Noble Widow MK. XIV
+    Flood Mk. I
+    Flood Juggernaut Mk. VII
+    Cullen Predator Mk. III
