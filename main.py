@@ -1,91 +1,11 @@
-# import json
 import requests
 from bs4 import BeautifulSoup
 import re
-from pprint import pprint
-from pprint import pformat
 
-st_accept = "text/html"
-st_useragent = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 12_3_1) AppleWebKit/605.1.15 (KHTML, like Gecko) "
-                "Version/15.4 Safari/605.1.15")
-
-headers = {
-    "Accept": st_accept,
-    "User-Agent": st_useragent
-}
+from config import headers, translation
 
 health_table = requests.get("https://foxhole.wiki.gg/wiki/Vehicle_Health", headers)
 health_table = BeautifulSoup(health_table.text, "html.parser").body
-
-links = {
-    'T12 “Actaeon” Tankette': 'https://foxhole.wiki.gg/wiki/T12_“Actaeon”_Tankette',
-    # 'H-5 “Hatchet”': 'https://foxhole.wiki.gg/wiki/H-5_“Hatchet”',
-    # 'H-8 “Kranesca”': 'https://foxhole.wiki.gg/wiki/H-8_“Kranesca”',
-    # 'H-10 “Pelekys”': 'https://foxhole.wiki.gg/wiki/H-10_“Pelekys”',
-    # 'HC-2 “Scorpion”': 'https://foxhole.wiki.gg/wiki/Light_Infantry_Tank',
-    # 'HC-7 “Ballista”': 'https://foxhole.wiki.gg/wiki/Siege_Tank',
-    # '85K-b “Falchion”': 'https://foxhole.wiki.gg/wiki/85K-b_“Falchion”',
-    # '85K-a_“Spatha”': 'https://foxhole.wiki.gg/wiki/85K-a_“Spatha”',
-    # '86K-a “Bardiche”': 'https://foxhole.wiki.gg/wiki/86K-a_“Bardiche”',
-    # '85V-g “Talos”': 'https://foxhole.wiki.gg/wiki/85V-g_“Talos”',
-    # 'Lance-36': 'https://foxhole.wiki.gg/wiki/Lance-36',
-    # 'Lance-25 “Hasta”': 'https://foxhole.wiki.gg/wiki/Lance-25_“Hasta”',
-    # 'O-75b “Ares”': 'https://foxhole.wiki.gg/wiki/O-75b_“Ares”',
-    # 'Gallagher Outlaw Mk. II': 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II',
-    # 'Silverhand - Mk. IV': 'https://foxhole.wiki.gg/wiki/Silverhand_-_Mk._IV',
-    # 'King Spire Mk. I': 'https://foxhole.wiki.gg/wiki/King_Spire_Mk._I',
-    # 'King Gallant Mk. II': 'https://foxhole.wiki.gg/wiki/King_Gallant_Mk._II',
-    # 'Devitt Mk. III': 'https://foxhole.wiki.gg/wiki/Devitt_Mk._III',
-    # 'Devitt Ironhide Mk. IV': 'https://foxhole.wiki.gg/wiki/Devitt_Ironhide_Mk._IV',
-    # 'Gallagher Highwayman Mk. III': 'https://foxhole.wiki.gg/wiki/Gallagher_Highwayman_Mk._III',
-    # 'Silverhand Chieftain - Mk. VI': 'https://foxhole.wiki.gg/wiki/Silverhand_Chieftain_-_Mk._VI',
-    # 'Silverhand Lordscar - Mk. X': 'https://foxhole.wiki.gg/wiki/Silverhand_Lordscar_-_Mk._X',
-    # 'Noble Widow MK. XIV': 'https://foxhole.wiki.gg/wiki/Noble_Widow_MK._XIV',
-    # 'Flood Mk. I': 'https://foxhole.wiki.gg/wiki/Flood_Mk._I',
-    # 'Flood Juggernaut Mk. VII': 'https://foxhole.wiki.gg/wiki/Flood_Juggernaut_Mk._VII',
-    # 'Cullen Predator Mk. III': 'https://foxhole.wiki.gg/wiki/Cullen_Predator_Mk._III',
-}
-translation = {
-    '40mm Long Barrel Cannon': '40-мм длинноствольная пушка',
-    '7.92mm Hull Machine Gun': '7,92-мм корпусный пулемет',
-    '40mm Cannon': '40-мм пушка',
-    '68mm Cannon': '68-мм пушка',
-    '7.92mm Machine Gun': '7,92-мм пулемет',
-    'Bonesaw Mortar Launchers': 'минометные установки Bonesaw',
-    '12.7mm Machine Gun': '12,7-мм пулемет',
-    '2x 12.7mm Machine Gun': 'Два 12,7-мм пулемета',
-    'Dual 20mm Cannon': 'Сдвоенная 20-мм пушка',
-    '94.5mm Cannon': '94,5-мм пушка',
-    '250mm Mortar': '250-мм миномет',
-    '12.7mm Twin Barrel Machine Gun': '12,7-мм двухствольный пулемет',
-    '2x Quad Grenade Launcher': '2 четырехствольных гранатомета',
-    'Heavy Flamethrower': 'Тяжелый огнемет',
-    '75mm Cannon': '75-мм пушка',
-    '30mm Cannon': '30-мм пушка',
-    'Double-Barrelled 75mm Cannon': 'Двуствольная 75-мм пушка',
-    'Commander': 'Командир',
-    'Driver': 'Мехвод',
-    'Turret Gunner': 'Наводчик башни',
-    'AT Gunner': 'Наводчик ПТ пушки',
-    'Passenger(s)': 'Пассажиры',
-    'MG Gunner': 'Наводчик пулемета',
-    'Cannoneer (Gunner)': 'Наводчик',
-    'Engineer': 'Инженер',
-    'Middle Secondary Gunner': 'Средний вспомогательный стрелок',
-    'Back Secondary Gunner': 'Задний вспомогательный стрелок',
-    'Right Engineer': 'Правый инженер',
-    'Left Engineer': 'Левый инженер',
-    'Gunner': 'Наводчик',
-    'Passenger/Commander': 'Пассажир/Командир',
-    'Secondary Gunner': 'Второй наводчик',
-    'Gunner (Right)': 'Наводчик (Правый)',
-    'Commander/Gunner (Left)': 'Командик/наводчик (левый)',
-    'Commander/Machine Gunner': 'Командир/Наводчик пулемета',
-    '12.7mm Coaxial Machine Gun': 'Спаренный 12,7-мм пулемет',
-    '68mm Short-Barrel Cannon': '68-мм короткоствольная пушка',
-    'Gunner/Commander': 'Наводчик/Командир',
-    'Secondary Gunner/Commander': 'Второй наводчик/Командир',
-}
 
 
 def get_vehicle_stats(url):
@@ -247,7 +167,7 @@ def get_vehicle_stats(url):
     }
     table_dict = {}
 
-    for i in assign_dict.keys():
+    for i in assign_dict:
         val1 = row.contents[assign_dict[i]].find('font').string
         val2 = row.contents[assign_dict[i]].contents[2].string.rstrip()
         table_dict[i] = f'{val1}/{val2}'
@@ -274,15 +194,3 @@ def get_vehicle_stats(url):
         'Дальность': range_dict
     }
 
-
-result = {'vehicles': {}}
-
-for i in links.values():
-    result['vehicles'].update(get_vehicle_stats(i))
-
-# pprint(result, sort_dicts=False)
-# f = open('output.txt', 'w+', encoding='windows-1251')
-# f.write(pformat(result, sort_dicts=False))
-# f.close()
-
-# pprint(result['vehicles']['T12 “Actaeon” Tankette']['П.П/У'], sort_dicts=False)
