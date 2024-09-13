@@ -1,20 +1,26 @@
+import re
+import sys
 import requests
 from bs4 import BeautifulSoup
-import re
 
 from config import headers, translation
 
-health_table = requests.get("https://foxhole.wiki.gg/wiki/Vehicle_Health", headers)
-health_table = BeautifulSoup(health_table.text, "html.parser").body
+try:
+    health_table = requests.get("https://foxhole.wiki.gg/wiki/Vehicle_Health", headers)
+    health_table = BeautifulSoup(health_table.text, "html.parser").body
+except requests.ConnectionError:
+    sys.exit("Connection error occurred while connecting to foxhole.wiki")
 
 
 def get_vehicle_stats(url):
-    req = requests.get(url, headers)
-    src = req.text
-    soup = BeautifulSoup(src, "html.parser").body
+    try:
+        response = requests.get(url, headers)
+    except requests.ConnectionError:
+        sys.exit("Connection error occurred while connecting to foxhole.wiki")
+
+    soup = BeautifulSoup(response.text, "html.parser").body
 
     # Название
-
     name = soup.find("h2", {"data-source": "name"}).get_text()
 
     # Здоровье
@@ -37,8 +43,7 @@ def get_vehicle_stats(url):
     min_pin_chance = matches[0][1]
     max_pin_chance = matches[0][2]
 
-    # % подбития под систем
-
+    # Процент подбития под систем
     sub_vars = soup.find_all("div", {"data-source": "min_pen_chance"})[1].div.get_text()[1:].replace('%', '').split(' ')
 
     subsytems_dict = {}
@@ -94,13 +99,13 @@ def get_vehicle_stats(url):
         reload_duration = matches[0][0]
 
         var_dict = {
-            'Скорость перезарядки': reload_duration,
+            'reload_duration': reload_duration,
         }
 
         pattern = r'Firing Duration: (\d+[.]?(\d+)?) seconds'
         matches = re.findall(pattern, text)
         if matches:
-            var_dict.update({'Время стрельбы': matches[0][0]})
+            var_dict.update({'firing_duration': matches[0][0]})
 
         reload_dict.update({gun_name: var_dict})
 
@@ -108,7 +113,7 @@ def get_vehicle_stats(url):
         matches = re.findall(pattern, text)
 
         var_dict = {
-            'Дальность': matches[0][0],
+            'range': matches[0][0],
         }
 
         range_dict.update({gun_name: var_dict})
@@ -132,8 +137,6 @@ def get_vehicle_stats(url):
     # matches = re.findall(pattern, tab_inventory.contents[-4])
     # free_inventory = matches[0] if matches else None
 
-    # Инвентарь итоговый
-
     # Место постройки
     # build_location = soup.find_all("div", {"data-source": "build_location"})[0].contents[3].getText()
 
@@ -144,14 +147,11 @@ def get_vehicle_stats(url):
     table = health_table.find("table", {"class": "wikitable"}).tbody
     trs = table.find_all("tr")[1:]
 
-    # print(trs[0].td.get_text())
     row = ''
     for tr in trs:
         if name in tr.td.get_text():
             row = tr
             break
-
-    # print(row.contents[9])
 
     assign_dict = {
         '20мм': 9,
@@ -173,24 +173,23 @@ def get_vehicle_stats(url):
         table_dict[i] = f'{val1}/{val2}'
 
     return {
-        'ХП': hp,
-        'Подбит при': disable,
-        'П.П/У': table_dict,
-        'Броня': armor,
-        'Базовый шанс пробития': min_pin_chance,
-        'Максимальная степень износа танковой брони': max_pin_chance,
-        'Шанс подбития подсистем': subsytems_dict,
-        'Стоимость полной починки': repair_cost,
-        'Скорость': {
-            'дорога': speed1,
-            'бездорожье': speed2
+        'hp': hp,
+        'disable': disable,
+        'health_table': table_dict,
+        'armor': armor,
+        'min_pin_chance': min_pin_chance,
+        'max_pin_chance': max_pin_chance,
+        'subsystems_pin_chance': subsytems_dict,
+        'repair_cost': repair_cost,
+        'speed': {
+            'road': speed1,
+            'off-road': speed2
         },
-        'Объём бака': fuelcap,
-        'Потребление': fuel_per_min,
-        'Время хода': fuel_autonomy,
-        'Вооружение': translated_guns,
-        'Перезарядка': reload_dict,
-        'Экипаж': translated_crew,
-        'Дальность': range_dict
+        'fuel_tank': fuelcap,
+        'fuel_consumption_rate': fuel_per_min,
+        'fuel_autonomy': fuel_autonomy,
+        'guns': translated_guns,
+        'reload': reload_dict,
+        'crew': translated_crew,
+        'range': range_dict
     }
-
