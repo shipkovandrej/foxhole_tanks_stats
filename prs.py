@@ -9,7 +9,9 @@ from main import get_vehicle_stats
 try:
     prs = Presentation('foxhole_tanks_stats.pptx')
 except exc.PackageNotFoundError:
-    sys.exit("Нет презентации foxhole_tanks_stats.pptx в каталоге")
+    print("\nНет презентации foxhole_tanks_stats.pptx в каталоге\n")
+    input("Enter для выхода")
+    sys.exit(0)
 
 # Проверка на индексы текста
 # slide = prs.slides[3]
@@ -104,3 +106,5 @@ for slide in prs.slides:
             i.runs[0].font.size = Pt(16)
             i.runs[0].font.name = "Bahnschrift Condensed"
         prs.save("foxhole_tanks_stats.pptx")
+
+input("Enter для выхода")

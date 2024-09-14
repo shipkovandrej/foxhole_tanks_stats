@@ -9,14 +9,17 @@ try:
     health_table = requests.get("https://foxhole.wiki.gg/wiki/Vehicle_Health", headers)
     health_table = BeautifulSoup(health_table.text, "html.parser").body
 except requests.ConnectionError:
-    sys.exit("Connection error occurred while connecting to foxhole.wiki")
-
+    print("\nConnection error occurred while connecting to foxhole.wiki\n")
+    input("Enter для выхода")
+    sys.exit(0)
 
 def get_vehicle_stats(url):
     try:
         response = requests.get(url, headers)
     except requests.ConnectionError:
-        sys.exit("Connection error occurred while connecting to foxhole.wiki")
+        print("\nConnection error occurred while connecting to foxhole.wiki\n")
+        input("Enter для выхода")
+        sys.exit(0)
 
     soup = BeautifulSoup(response.text, "html.parser").body
 
